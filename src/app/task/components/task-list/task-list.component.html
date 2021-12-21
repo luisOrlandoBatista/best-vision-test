@@ -1,0 +1,76 @@
+<form [formGroup]="form" class="row-class justify-content-class m-t-20">
+  <div class="column-class m-r-20">
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input matInput type="text" formControlName="title">
+      <mat-error>
+        Required field
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Color</mat-label>
+      <mat-select formControlName="color">
+        <mat-option *ngFor="let color of colors" [value]="color">
+          {{color}}
+        </mat-option>
+      </mat-select>
+      <mat-error>
+        Required field
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="column-class">
+    <mat-form-field appearance="outline" style="width: 250px;">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" cdkAutosizeMinRows="3" cdkAutosizeMaxRows="5"></textarea>
+      <mat-error>
+        Required field
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="addTask()">Add Task</button>
+  </div>
+</form>
+
+<div class="container-class">
+  <div class="container-expansion-panel-class" cdkDropListGroup>
+    <mat-accordion multi>
+      <mat-expansion-panel *ngFor="let taskList of pendingTask; let i = index" [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="panel-title-class" [ngSwitch]="taskList.color">
+           <div class="row-class" *ngSwitchCase="'gray'"><div class="rounded-color-class bg-gray"></div> {{ taskList.title }}</div>
+           <div class="row-class" *ngSwitchCase="'blue'"><div class="rounded-color-class bg-blue"></div> {{ taskList.title }}</div>
+           <div class="row-class" *ngSwitchCase="'green'"><div class="rounded-color-class bg-green"></div> {{ taskList.title }}</div>
+           <div class="row-class" *ngSwitchCase="'red'"><div class="rounded-color-class bg-red"></div> {{ taskList.title }}</div>
+           <div class="row-class" *ngSwitchDefault><div class="rounded-color-class"></div> {{ taskList.title }}</div>
+          </mat-panel-title>
+
+        </mat-expansion-panel-header>
+        <div cdkDropList [cdkDropListData]="taskList.tasks" (cdkDropListDropped)="drop($event)">
+          <mat-card *ngFor="let task of taskList.tasks; let j = index" cdkDrag class="m-b-3 custom-box-shadow cursor-pointer">
+            <div class="row-class justify-space-between-class">
+              <div class="row-class">
+                <div class="row-class align-items-center-class" [ngSwitch]="task.color">
+                  <div *ngSwitchCase="'gray'" class="rounded-color-class bg-gray"></div>
+                  <div *ngSwitchCase="'blue'" class="rounded-color-class bg-blue"></div>
+                  <div *ngSwitchCase="'green'" class="rounded-color-class bg-green"></div>
+                  <div *ngSwitchCase="'red'" class="rounded-color-class bg-red"></div>
+                  <div *ngSwitchDefault class="rounded-color-class bg-gray"></div>
+                </div>
+                <div class="column-class">
+                  <div mat-line>{{ task.title }}</div>
+                  <div mat-line class="color-grey-class"> {{ task.description }} </div>
+                </div>
+              </div>
+              <button mat-icon-button (click)="editTask(i, j)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </mat-card>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

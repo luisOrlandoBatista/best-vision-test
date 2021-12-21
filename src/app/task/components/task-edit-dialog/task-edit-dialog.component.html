@@ -1,0 +1,46 @@
+<mat-toolbar color="primary" mat-dialog-title>
+  <span>{{ 'EDIT' | uppercase }}</span>
+</mat-toolbar>
+
+<form [formGroup]="form" class="form-class" (ngSubmit)="onSubmit()">
+
+  <mat-dialog-content>
+    <div class="column-class">
+      <mat-form-field appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput type="text" formControlName="title">
+        <mat-error>
+          Required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Color</mat-label>
+        <mat-select formControlName="color">
+          <mat-option *ngFor="let color of colors" [value]="color">
+            {{color}}
+          </mat-option>
+        </mat-select>
+        <mat-error>
+          Required field
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width: 250px;">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description" cdkAutosizeMinRows="3" cdkAutosizeMaxRows="5"></textarea>
+        <mat-error>
+          Required field
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="justify-content-flex-end-class">
+    <button mat-raised-button type="submit" color="primary" [disabled]="form.invalid">
+      ACCEPT
+    </button>
+    <button mat-raised-button mat-dialog-close="close">CANCEL</button>
+  </mat-dialog-actions>
+</form>
